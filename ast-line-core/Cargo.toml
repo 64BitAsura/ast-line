@@ -1,0 +1,18 @@
+[package]
+name = "ast-line-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+ignore = "0.4"
+uuid = { version = "1", features = ["v4"] }
+rayon = "1"
+home = "0.5"
+walkdir = "2"
+regex = "1"
