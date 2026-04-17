@@ -1,6 +1,5 @@
 use anyhow::Result;
 use regex::Regex;
-use uuid::Uuid;
 
 use crate::graph::KnowledgeGraph;
 use crate::types::graph::{GraphNode, GraphRelationship, NodeKind, RelationshipKind};
@@ -155,9 +154,4 @@ fn kind_str(kind: &NodeKind) -> &'static str {
         NodeKind::TypeAlias => "type",
         _ => "sym",
     }
-}
-
-#[allow(dead_code)]
-fn _unused_uuid() -> String {
-    Uuid::new_v4().to_string()
 }

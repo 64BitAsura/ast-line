@@ -1,6 +1,5 @@
 use anyhow::Result;
 use std::collections::HashSet;
-use uuid::Uuid;
 
 use crate::graph::KnowledgeGraph;
 use crate::ingestion::filesystem_walker::ScannedFile;
@@ -28,7 +27,7 @@ impl StructurePhase {
         on_progress(PipelineProgress {
             phase: PipelinePhase::Structure,
             percent: 15,
-            message: "Analysing project structure...".into(),
+            message: "Analyzing project structure...".into(),
             detail: None,
             stats: Some(PipelineStats {
                 files_processed: 0,
@@ -43,7 +42,7 @@ impl StructurePhase {
         on_progress(PipelineProgress {
             phase: PipelinePhase::Structure,
             percent: 20,
-            message: "Project structure analysed".into(),
+            message: "Project structure analyzed".into(),
             detail: None,
             stats: Some(PipelineStats {
                 files_processed: total_files,
@@ -122,9 +121,4 @@ fn process_structure(graph: &mut KnowledgeGraph, all_paths: &[String]) {
             remaining = parent_dir;
         }
     }
-}
-
-#[allow(dead_code)]
-fn stable_id(s: &str) -> String {
-    Uuid::new_v4().to_string() + ":" + s
 }
