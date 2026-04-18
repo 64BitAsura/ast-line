@@ -176,7 +176,8 @@ fn extract_rust_symbols(graph: &mut KnowledgeGraph, file_id: &str, file_path: &s
         }
 
         let mut cursor = node.walk();
-        stack.extend(node.children(&mut cursor));
+        let children: Vec<_> = node.children(&mut cursor).collect();
+        stack.extend(children.into_iter().rev());
     }
 }
 
@@ -194,19 +195,20 @@ fn impl_type_name(node: Node<'_>, source: &[u8]) -> Option<String> {
 }
 
 fn find_first_type_identifier(node: Node<'_>, source: &[u8]) -> Option<String> {
-    if matches!(
-        node.kind(),
-        "type_identifier" | "scoped_type_identifier" | "identifier"
-    ) {
-        return node.utf8_text(source).ok().map(ToOwned::to_owned);
+    let mut stack = vec![node];
+    while let Some(current) = stack.pop() {
+        if matches!(
+            current.kind(),
+            "type_identifier" | "scoped_type_identifier" | "identifier"
+        ) {
+            return current.utf8_text(source).ok().map(ToOwned::to_owned);
+        }
+
+        let mut cursor = current.walk();
+        let children: Vec<_> = current.children(&mut cursor).collect();
+        stack.extend(children.into_iter().rev());
     }
 
-    let mut cursor = node.walk();
-    for child in node.children(&mut cursor) {
-        if let Some(found) = find_first_type_identifier(child, source) {
-            return Some(found);
-        }
-    }
     None
 }
 
